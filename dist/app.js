@@ -1,8 +1,8 @@
 import * as T from './three.module.js';
-import { createLanternFactory } from './lanterns.js';
-import { addGardenDetails } from './garden-details.js';
-import { nightGarden } from './night-garden.js';
-import { createForest } from './forest.js';
+import { createLanternFactory } from './lanterns.js?v=ribbons-2';
+import { addGardenDetails } from './garden-details.js?v=ribbons-2';
+import { nightGarden } from './night-garden.js?v=ribbons-2';
+import { createForest } from './forest.js?v=ribbons-2';
 const $=id=>document.getElementById(id), scene=new T.Scene();scene.background=new T.Color('#07141c');scene.fog=new T.FogExp2('#07141c',.016);
 const renderer=new T.WebGLRenderer({antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;$('world').appendChild(renderer.domElement);
 const camera=new T.PerspectiveCamera(60,innerWidth/innerHeight,.1,650);const ambient=new T.HemisphereLight(0x95c6d7,0x132f26,.65);scene.add(ambient);const sun=new T.DirectionalLight(0x96c5d7,.65);sun.position.set(60,100,30);scene.add(sun);
@@ -68,7 +68,7 @@ addGardenDetails(scene,register,night);
 for(let i=0;i<35;i++){let a=rnd()*Math.PI*2,r=72+rnd()*8;let lily=mesh(new T.CircleGeometry(.6+rnd(),9),leaf,Math.cos(a)*r,-.25,Math.sin(a)*r);lily.rotation.x=-Math.PI/2}
 const shaftMat=new T.MeshBasicMaterial({color:'#f5e8ac',transparent:true,opacity:.012,depthWrite:false,side:T.DoubleSide});
 for(let i=0;i<14;i++){let a=i/14*Math.PI*2;let beam=mesh(new T.CylinderGeometry(.3,5,27,16,1,true),shaftMat,Math.cos(a)*88,13,Math.sin(a)*88);beam.rotation.z=.3}
-const particles=new T.BufferGeometry(),arr=new Float32Array(600);for(let i=0;i<600;i+=3){let a=rnd()*Math.PI*2,r=70+rnd()*60;arr[i]=Math.cos(a)*r;arr[i+1]=1+rnd()*13;arr[i+2]=Math.sin(a)*r}particles.setAttribute('position',new T.BufferAttribute(arr,3));let motes=new T.Points(particles,new T.PointsMaterial({color:'#effcb0',size:.14,transparent:true,opacity:.7}));scene.add(motes);
+const particles=new T.BufferGeometry(),arr=new Float32Array(600);for(let i=0;i<600;i+=3){let a=rnd()*Math.PI*2,r=70+rnd()*60;arr[i]=Math.cos(a)*r;arr[i+1]=1+rnd()*13;arr[i+2]=Math.sin(a)*r}particles.setAttribute('position',new T.BufferAttribute(arr,3));const moteCanvas=document.createElement('canvas');moteCanvas.width=moteCanvas.height=32;const moteCtx=moteCanvas.getContext('2d'),moteGlow=moteCtx.createRadialGradient(16,16,0,16,16,16);moteGlow.addColorStop(0,'#ffffff');moteGlow.addColorStop(.25,'#ffffffaa');moteGlow.addColorStop(1,'#ffffff00');moteCtx.fillStyle=moteGlow;moteCtx.fillRect(0,0,32,32);let motes=new T.Points(particles,new T.PointsMaterial({map:new T.CanvasTexture(moteCanvas),color:'#effcb0',size:.2,transparent:true,opacity:.6,depthWrite:false,blending:T.AdditiveBlending}));scene.add(motes);
 let entered=false,paused=false,angle=.1,look=0,pitch=0,dusk=true,energy=0,bass=0,high=0,burst=0,ctx,analyser,master,buffer,stream,micSource,audio,audioSource,mode='ambient',timer,muted=false,step=0;
 for(let i=0;i<9;i++)$('bars').appendChild(document.createElement('i'));
 function initAudio(){if(ctx)return;ctx=new AudioContext();analyser=ctx.createAnalyser();analyser.fftSize=256;buffer=new Uint8Array(analyser.frequencyBinCount);master=ctx.createGain();master.gain.value=.35;analyser.connect(master);master.connect(ctx.destination);timer=setInterval(()=>{if(mode==='ambient'&&entered&&!paused){const notes=[164.81,0,246.94,293.66,0,329.63,246.94,0,196,0,293.66,0,246.94,0,196,0];const n=notes[step++%notes.length];if(n)tone(n,.10,3.8);if(step%8===0)gong(82.4,.09);if(step%16===0)tone(82.4,.12,7)}},560)}

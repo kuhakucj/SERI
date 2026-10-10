@@ -1,5 +1,5 @@
 import * as T from './three.module.js';
-import { createWisps } from './wisps.js';
+import { createWisps } from './wisps.js?v=ribbons-2';
 export function nightGarden(scene,register,random){
  const wisps=createWisps(scene);
  const rnd=random, nodes=[], solarFlowers=[];
