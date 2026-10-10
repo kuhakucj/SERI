@@ -14,7 +14,7 @@ export function addGardenDetails(scene,register,night){
  ctx.fillStyle='#e8cdba';for(let j=0;j<4;j++){ctx.beginPath();ctx.arc(Math.cos(j*Math.PI/2)*103,Math.sin(j*Math.PI/2)*103,12,0,Math.PI*2);ctx.fill()}
  const tileMap=new T.CanvasTexture(tileCanvas);tileMap.colorSpace=T.SRGBColorSpace;tileMap.wrapS=tileMap.wrapT=T.RepeatWrapping;tileMap.repeat.set(6,3);
  const tileMaterial=new T.MeshStandardMaterial({map:tileMap,roughness:.38,metalness:.15,emissive:'#85566c',emissiveIntensity:.22});
- const pink=new T.MeshStandardMaterial({color:'#ff9bd0',emissive:'#ff4aab',emissiveIntensity:2.5});
+ const pink=new T.MeshStandardMaterial({color:'#ff50c9',emissive:'#ff16b3',emissiveIntensity:2.5});
  const grout=new T.MeshStandardMaterial({color:'#264744',roughness:.9});
  for(const terraceRadius of [80.2,99.8])for(let i=0;i<64;i++){
   const a=i*Math.PI*2/64,r=terraceRadius,g=new T.Group();g.position.set(Math.cos(a)*r,0,Math.sin(a)*r);g.rotation.y=-a-Math.PI/2;scene.add(g);

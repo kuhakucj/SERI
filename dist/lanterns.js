@@ -2,7 +2,7 @@ import * as T from './three.module.js';
 // Original botanical and geometric patterns, drawn for these lanterns.
 export function createLanternFactory(){
  const frame=new T.MeshStandardMaterial({color:'#58472f',metalness:.65,roughness:.4});
- const palette=['#ffc36b','#ff8fc9','#79e6cc'];
+ const palette=['#ffd28b','#ff35bf','#69dfce'];
  const textures=palette.map((color,index)=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');x.fillStyle='#171f22';x.fillRect(0,0,256,256);x.strokeStyle=color;x.fillStyle=color;x.lineWidth=4;x.strokeRect(9,9,238,238);
  for(let row=0;row<2;row++)for(let col=0;col<2;col++){x.save();x.translate(67+col*122,67+row*122);for(let j=0;j<8;j++){x.rotate(Math.PI/4);x.beginPath();x.ellipse(0,25,7+index*2,18,0,0,Math.PI*2);x.fill()}x.fillStyle='#fff1bc';x.beginPath();x.arc(0,0,8,0,Math.PI*2);x.fill();x.fillStyle=color;x.restore()}
  const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;t.anisotropy=4;return t});
