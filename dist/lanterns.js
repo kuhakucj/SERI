@@ -3,8 +3,17 @@ import * as T from './three.module.js';
 export function createLanternFactory(){
  const frame=new T.MeshStandardMaterial({color:'#58472f',metalness:.65,roughness:.4});
  const palette=['#ffd28b','#ff35bf','#69dfce'];
- const textures=palette.map((color,index)=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');x.fillStyle='#171f22';x.fillRect(0,0,256,256);x.strokeStyle=color;x.fillStyle=color;x.lineWidth=4;x.strokeRect(9,9,238,238);
- for(let row=0;row<2;row++)for(let col=0;col<2;col++){x.save();x.translate(67+col*122,67+row*122);for(let j=0;j<8;j++){x.rotate(Math.PI/4);x.beginPath();x.ellipse(0,25,7+index*2,18,0,0,Math.PI*2);x.fill()}x.fillStyle='#fff1bc';x.beginPath();x.arc(0,0,8,0,Math.PI*2);x.fill();x.fillStyle=color;x.restore()}
+ const textures=palette.map((color,index)=>{
+ const c=document.createElement('canvas');c.width=c.height=1024;const x=c.getContext('2d');x.scale(4,4);x.fillStyle='#101d20';x.fillRect(0,0,256,256);x.strokeStyle=color;x.fillStyle=color;x.lineWidth=1;
+ for(const inset of [4,9,16])x.strokeRect(inset,inset,256-inset*2,256-inset*2);
+ for(let p=23;p<240;p+=9){for(const [a,b] of [[p,12],[p,244],[12,p],[244,p]]){x.beginPath();x.arc(a,b,1.3,0,Math.PI*2);x.fill()}}
+ for(let row=0;row<2;row++)for(let col=0;col<2;col++){
+ x.save();x.translate(69+col*118,69+row*118);
+ for(let ring=0;ring<2;ring++){x.save();if(ring)x.rotate(Math.PI/8);for(let j=0;j<8;j++){x.rotate(Math.PI/4);x.beginPath();x.moveTo(0,7);x.bezierCurveTo(-15,19,-10,40,0,48-ring*13);x.bezierCurveTo(10,40,15,19,0,7);if(!ring)x.fill();else{x.strokeStyle='#fff0c3';x.stroke()}x.beginPath();x.moveTo(0,12);x.lineTo(0,40);x.strokeStyle='#263333';x.stroke()}x.restore()}
+ x.strokeStyle=color;for(const r of [12,16,51]){x.beginPath();x.arc(0,0,r,0,Math.PI*2);x.stroke()}
+ for(let j=0;j<24;j++){const a=j*Math.PI/12;x.beginPath();x.arc(Math.cos(a)*46,Math.sin(a)*46,1.15,0,Math.PI*2);x.fill()}
+ x.fillStyle='#fff4c9';x.beginPath();x.arc(0,0,5,0,Math.PI*2);x.fill();x.restore();
+ }
  const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;t.anisotropy=4;return t});
  function mesh(g,geometry,material,x,y,z){const m=new T.Mesh(geometry,material);m.position.set(x,y,z);g.add(m);return m}
  function bar(g,w,h,d,x,y,z){return mesh(g,new T.BoxGeometry(w,h,d),frame,x,y,z)}
