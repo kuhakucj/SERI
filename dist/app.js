@@ -1,4 +1,5 @@
 import * as T from './three.module.js';
+import { addGardenDetails } from './garden-details.js';
 import { nightGarden } from './night-garden.js';
 import { createForest } from './forest.js';
 const $=id=>document.getElementById(id), scene=new T.Scene();scene.background=new T.Color('#07141c');scene.fog=new T.FogExp2('#07141c',.016);
@@ -43,6 +44,7 @@ const pavingMap=new T.CanvasTexture(pavingCanvas);pavingMap.wrapS=pavingMap.wrap
 // Irregular stepping stones soften the edge of the path.
 for(let i=0;i<700;i++){const a=rnd()*Math.PI*2,r=84.5+rnd()*11;forest.rock(Math.cos(a)*r,Math.sin(a)*r,.12+rnd()*.25)}
 forest.finish();
+addGardenDetails(scene,register,night);
 // Small translucent pools and lily leaves along the inner edge.
 for(let i=0;i<35;i++){let a=rnd()*Math.PI*2,r=72+rnd()*8;let lily=mesh(new T.CircleGeometry(.6+rnd(),9),leaf,Math.cos(a)*r,-.25,Math.sin(a)*r);lily.rotation.x=-Math.PI/2}
 const shaftMat=new T.MeshBasicMaterial({color:'#f5e8ac',transparent:true,opacity:.012,depthWrite:false,side:T.DoubleSide});
