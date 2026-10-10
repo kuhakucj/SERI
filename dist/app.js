@@ -12,7 +12,24 @@ const R=90,road=new T.Mesh(new T.RingGeometry(R-5,R+5,240),mat('#d1c198'));road.
 const interactive=[], lamps=[], fronds=[], flowers=[];let seed=32;const rnd=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646};
 const forest=createForest(scene,rnd);
 function register(g,type){g.userData.type=type;g.traverse(o=>{if(o.isMesh){o.userData.root=g;interactive.push(o)}})}
-function house(a,r){let g=new T.Group();g.position.set(Math.cos(a)*r,0,Math.sin(a)*r);g.rotation.y=-a+Math.PI/2;scene.add(g);for(const x of [-3,3])for(const z of [-2,2])box(.3,3,.3,wood,x,1,z,g);box(7,.4,5,gold,0,2.5,0,g);box(6,3.5,4,wood,0,4.3,0,g);for(const x of [-2,0,2])box(.85,1.4,.06,glow,x,4.3,2.03,g);for(const side of [-1,1]){let q=box(4.6,.25,6,roof,side*1.85,6.8,0,g);q.rotation.z=side*-.6;let p=box(2.7,.08,3.8,solar,side*1.7,7.05,0,g);p.rotation.z=side*-.6;for(let k=0;k<6;k++){let rail=box(.06,.08,4, gold,side*1.7+(k-2.5)*.36,7.12-(side*(k-2.5)*.36)*.68,0,g)}}box(.16,.16,7,gold,0,8,0,g);for(let j=0;j<7;j++)box(7,.16,.3,gold,0,.4+j*.32,4.7-j*.32,g);for(let j=-3;j<=3;j++)box(.1,1,.1,gold,j,3.15,2.5,g);register(g,'house');night.decorate(g,'house');}
+function house(a,r){let g=new T.Group();g.position.set(Math.cos(a)*r,0,Math.sin(a)*r);g.rotation.y=-a+Math.PI/2;scene.add(g);for(const x of [-3,3])for(const z of [-2,2])box(.3,3,.3,wood,x,1,z,g);box(7,.4,5,gold,0,2.5,0,g);box(6,3.5,4,wood,0,4.3,0,g);for(const x of [-2,0,2])box(.85,1.4,.06,glow,x,4.3,2.03,g);for(const side of [-1,1]){let q=box(4.6,.25,6,roof,side*1.85,6.8,0,g);q.rotation.z=side*-.6;let p=box(2.7,.08,3.8,solar,side*1.7,7.05,0,g);p.rotation.z=side*-.6;for(let k=0;k<6;k++){let rail=box(.06,.08,4, gold,side*1.7+(k-2.5)*.36,7.12-(side*(k-2.5)*.36)*.68,0,g)}}box(.16,.16,7,gold,0,8,0,g);for(let j=0;j<7;j++)box(7,.16,.3,gold,0,.4+j*.32,4.7-j*.32,g);for(let j=-3;j<=3;j++)box(.1,1,.1,gold,j,3.15,2.5,g);// Reference-inspired veranda screens, carved fascia, shutters, and roof finials.
+box(7.6,.22,2.1,wood,0,2.6,2.9,g);
+for(const x of [-3.35,-1.1,1.1,3.35]){box(.15,3.6,.15,gold,x,4.35,3.5,g);box(.28,.18,.28,gold,x,2.95,3.5,g)}
+for(let j=0;j<22;j++){
+ const x=-3.3+j*.31;box(.055,.9,.06,gold,x,3.2,3.5,g);
+ const trim=mesh(new T.TorusGeometry(.15,.035,4,12,Math.PI),gold,x,5.85,3.1,g);trim.rotation.z=Math.PI;
+}
+box(6.9,.12,.16,gold,0,3.75,3.5,g);box(6.9,.12,.16,gold,0,2.8,3.5,g);
+const screenMat=new T.MeshStandardMaterial({color:'#c4a863',roughness:.75,side:T.DoubleSide});
+for(const x of [-2,0,2]){
+ for(const side of [-1,1]){box(.16,1.65,.15,gold,x+side*.56,4.35,2.14,g);const shutter=box(.42,1.5,.09,wood,x+side*.83,4.3,2.18,g);shutter.rotation.y=side*.3}
+ box(1.25,.14,.15,gold,x,5.15,2.15,g);
+ for(let k=0;k<4;k++){const lattice=mesh(new T.RingGeometry(.12,.145,4),screenMat,x-.45+k*.3,5.45,2.14,g);lattice.rotation.z=Math.PI/4}
+}
+const gableShape=new T.Shape();gableShape.moveTo(-3.6,0);gableShape.lineTo(0,2.15);gableShape.lineTo(3.6,0);gableShape.closePath();mesh(new T.ShapeGeometry(gableShape),wood,0,5.8,2.9,g);
+for(let k=-5;k<=5;k++){const x=k*.48,h=1.75-Math.abs(x)*.5;box(.07,h,.08,gold,x,5.85+h/2,2.95,g)}
+for(const z of [-3.05,3.05]){mesh(new T.ConeGeometry(.13,.9,6),gold,0,8.35,z,g);box(.11,.7,.11,gold,0,8,z,g)}
+register(g,'house');night.decorate(g,'house');}
 const night=nightGarden(scene,register,rnd);
 const palm=(a,r,s)=>forest.palm(a,r,s);
 for(let i=0;i<28;i++){let a=i/28*Math.PI*2;house(a,110+(i%3)*4);palm(a+.07,102,.8+rnd()*.6);palm(a+.04,76,.7+rnd()*.7)}
